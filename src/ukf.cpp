@@ -73,6 +73,8 @@ UKF::UKF() {
     double weight = 0.5/(n_aug_ + lambda_);
     weights_(i) = weight;
   }
+  
+  is_initialized_ = false;
     
 }
 
