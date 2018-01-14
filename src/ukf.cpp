@@ -95,6 +95,58 @@ void UKF::ProcessMeasurement(MeasurementPackage meas_package) {
   Complete this function! Make sure you switch between lidar and radar
   measurements.
   */
+  
+  /*****************************************************************************
+   *  Initialization
+   ****************************************************************************/
+
+  
+  if (!is_initialized_) {//first measurement
+    if (meas_package.sensor_type_ == MeasurementPackage::RADAR) {
+      /**
+       Convert radar from polar to cartesian coordinates and initialize state.
+       */
+      double rho = meas_package.raw_measurements_[0]; // range
+      double phi = meas_package.raw_measurements_[1]; // bearing
+      double rho_dot = meas_package.raw_measurements_[2]; // velocity
+      
+      // polar to cartesian convertion
+      double px = rho * cos(phi);
+      //avoid devisions by small numbers
+      if ( px < 0.0001 ) {
+        px = 0.0001;
+      }
+      
+      double py = rho * sin(phi);
+      //avoid devisions by small numbers
+      if ( py < 0.0001 ) {
+        py = 0.0001;
+      }
+      
+      x_ << px, py, rho_dot, phi, 0;
+      time_us_ = meas_package.timestamp_;
+    }
+    else if (meas_package.sensor_type_ == MeasurementPackage::LASER){
+      double px = meas_package.raw_measurements_[0];
+      double py = meas_package.raw_measurements_[1];
+      x_ << px, py, 0, 0, 0;
+      time_us_ = meas_package.timestamp_;
+    }
+    is_initialized_ = true;
+    return;
+  }
+  
+  /*****************************************************************************
+   *  Prediction
+   ****************************************************************************/
+  
+  
+  
+  
+  /*****************************************************************************
+   *  Update
+   ****************************************************************************/
+  
 }
 
 /**
