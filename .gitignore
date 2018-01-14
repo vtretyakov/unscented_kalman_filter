@@ -1,6 +1,7 @@
 # silly macOS
 .DS_Store
 src/._*
+._*
 
 # build files
 build/
