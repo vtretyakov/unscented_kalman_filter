@@ -163,7 +163,7 @@ void UKF::ProcessMeasurement(MeasurementPackage meas_package) {
   /*****************************************************************************
    *  Update
    ****************************************************************************/
-  
+
   if (meas_package.sensor_type_ == MeasurementPackage::RADAR) {
     UpdateRadar(meas_package);
   } else if (meas_package.sensor_type_ == MeasurementPackage::LASER) {
@@ -184,7 +184,7 @@ void UKF::Prediction(double delta_t) {
   Complete this function! Estimate the object's location. Modify the state
   vector, x_. Predict sigma points, the state, and the state covariance matrix.
   */
-  
+
   /*** 1. Generate sigma points. ***/
   
   //create sigma point matrix
@@ -335,7 +335,7 @@ void UKF::UpdateLidar(MeasurementPackage meas_package) {
   */
   
   /*** 1. Predict Measurement **/
-  
+
   //set measurement dimension, Lidar can measure x and y
   int n_z = 2;
   
@@ -377,9 +377,9 @@ void UKF::UpdateLidar(MeasurementPackage meas_package) {
        0, std_laspy_*std_laspy_;
   
   S = S + R;
-  
+
   /*** 2. Update State ***/
-  
+
   // Incoming lidar measurement
   VectorXd z = meas_package.raw_measurements_;
   
@@ -411,6 +411,7 @@ void UKF::UpdateLidar(MeasurementPackage meas_package) {
   
   //NIS Update
   NIS_laser_ = z_diff.transpose() * S.inverse() * z_diff;
+
   
 }
 
@@ -451,7 +452,11 @@ void UKF::UpdateRadar(MeasurementPackage meas_package) {
     // measurement model
     Zsig(0,i) = sqrt(p_x*p_x + p_y*p_y);                        //r
     Zsig(1,i) = atan2(p_y,p_x);                                 //phi
-    Zsig(2,i) = (p_x*v1 + p_y*v2 ) / sqrt(p_x*p_x + p_y*p_y);   //r_dot
+    if (sqrt(p_x*p_x + p_y*p_y) < 0.0001){
+      Zsig(2,i) = (p_x*v1 + p_y*v2 ) / 0.0001;   //r_dot
+    } else {
+      Zsig(2,i) = (p_x*v1 + p_y*v2 ) / sqrt(p_x*p_x + p_y*p_y);   //r_dot
+    }
   }
   
   //mean predicted measurement
@@ -478,8 +483,8 @@ void UKF::UpdateRadar(MeasurementPackage meas_package) {
   //add measurement noise covariance matrix
   MatrixXd R = MatrixXd(n_z,n_z);
   R << std_radr_*std_radr_, 0, 0,
-  0, std_radphi_*std_radphi_, 0,
-  0, 0,std_radrd_*std_radrd_;
+       0, std_radphi_*std_radphi_, 0,
+       0, 0,std_radrd_*std_radrd_;
   
   S = S + R;
   
@@ -528,3 +533,4 @@ void UKF::UpdateRadar(MeasurementPackage meas_package) {
   NIS_radar_ = z_diff.transpose() * S.inverse() * z_diff;
   
 }
+
