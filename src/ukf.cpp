@@ -139,8 +139,7 @@ void UKF::ProcessMeasurement(MeasurementPackage meas_package) {
       
       x_ << px, py, rho_dot, phi, 0;
       time_us_ = meas_package.timestamp_;
-    }
-    else if (meas_package.sensor_type_ == MeasurementPackage::LASER){
+    } else if (meas_package.sensor_type_ == MeasurementPackage::LASER){
       double px = meas_package.raw_measurements_[0];
       double py = meas_package.raw_measurements_[1];
       x_ << px, py, 0, 0, 0;
