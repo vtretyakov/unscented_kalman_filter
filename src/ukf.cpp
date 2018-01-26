@@ -31,10 +31,10 @@ UKF::UKF() {
 
 
   // Process noise standard deviation longitudinal acceleration in m/s^2
-  std_a_ = 30;
+  std_a_ = 1.5;//30 it was
 
   // Process noise standard deviation yaw acceleration in rad/s^2
-  std_yawdd_ = 30;
+  std_yawdd_ = 0.6;//30 it was
   
   //DO NOT MODIFY measurement noise values below these are provided by the sensor manufacturer.
   // Laser measurement noise standard deviation position1 in m
@@ -84,6 +84,15 @@ UKF::UKF() {
   
   // current NIS for laser
   NIS_laser_ = 0.0;
+  
+  // open file to log NIS data
+  myfile_laser_.open ("NIS_laser.csv");
+  myfile_radar_.open ("NIS_radar.csv");
+  myfile_laser_ << "#,stamp,value\n";
+  myfile_radar_ << "#,value,95%\n";
+  
+  inc_laser_ = 0;
+  inc_radar_ = 0;
     
 }
 
@@ -157,7 +166,7 @@ void UKF::ProcessMeasurement(MeasurementPackage meas_package) {
   
   if (meas_package.sensor_type_ == MeasurementPackage::RADAR) {
     UpdateRadar(meas_package);
-  } else {
+  } else if (meas_package.sensor_type_ == MeasurementPackage::LASER) {
     UpdateLidar(meas_package);
   }
   

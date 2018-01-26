@@ -106,8 +106,17 @@ int main()
     	  ground_truth.push_back(gt_values);
           
           //Call ProcessMeasurment(meas_package) for Kalman filter
-    	  ukf.ProcessMeasurement(meas_package);    	  
-
+    	  ukf.ProcessMeasurement(meas_package);
+        if(meas_package.sensor_type_ == MeasurementPackage::RADAR){
+          ukf.myfile_radar_ << ukf.inc_radar_ << "," << ukf.NIS_radar_ << ",7.8\n";
+          std::cout << ukf.inc_radar_ << ", " << ukf.NIS_radar_ << "\n";
+          if(ukf.inc_radar_ == 249) {
+            ukf.myfile_radar_.close();
+          }
+          ukf.inc_radar_++;
+        } else if (meas_package.sensor_type_ == MeasurementPackage::LASER){
+          
+        }
     	  //Push the current estimated x,y positon from the Kalman filter's state vector
 
     	  VectorXd estimate(4);

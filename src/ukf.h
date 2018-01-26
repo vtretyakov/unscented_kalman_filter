@@ -72,6 +72,13 @@ public:
     
   ///* NIS for laser
   double NIS_laser_;
+    
+  // Create a file instance
+  std::ofstream myfile_laser_;
+  std::ofstream myfile_radar_;
+    
+  int inc_laser_;
+  int inc_radar_;
 
 
   /**
