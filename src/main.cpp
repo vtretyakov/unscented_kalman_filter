@@ -109,13 +109,18 @@ int main()
     	  ukf.ProcessMeasurement(meas_package);
         if(meas_package.sensor_type_ == MeasurementPackage::RADAR){
           ukf.myfile_radar_ << ukf.inc_radar_ << "," << ukf.NIS_radar_ << ",7.8\n";
-          std::cout << ukf.inc_radar_ << ", " << ukf.NIS_radar_ << "\n";
-          if(ukf.inc_radar_ == 249) {
+          std::cout << "Radar: " << ukf.inc_radar_ << ", " << ukf.NIS_radar_ << "\n";
+          if(ukf.inc_radar_ == 248) {
             ukf.myfile_radar_.close();
           }
           ukf.inc_radar_++;
         } else if (meas_package.sensor_type_ == MeasurementPackage::LASER){
-          
+          ukf.myfile_laser_ << ukf.inc_laser_ << "," << ukf.NIS_laser_ << ",7.8\n";
+          std::cout << "Laser: " << ukf.inc_laser_ << ", " << ukf.NIS_laser_ << "\n";
+          if(ukf.inc_laser_ == 248) {
+            ukf.myfile_laser_.close();
+          }
+          ukf.inc_laser_++;
         }
     	  //Push the current estimated x,y positon from the Kalman filter's state vector
 
