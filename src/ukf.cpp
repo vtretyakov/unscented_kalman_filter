@@ -350,8 +350,8 @@ void UKF::UpdateLidar(MeasurementPackage meas_package) {
     double p_y = Xsig_pred_(1,i);
     
     // measurement model
-    Zsig(0,i) = sqrt(p_x*p_x + p_y*p_y);   //x
-    Zsig(1,i) = atan2(p_y,p_x);            //y
+    Zsig(0,i) = p_x; //x
+    Zsig(1,i) = p_y; //y
   }
   
   //mean predicted measurement
