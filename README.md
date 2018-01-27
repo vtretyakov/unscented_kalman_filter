@@ -103,3 +103,51 @@ The EKF accuracy was:
 
 - Dataset 1 : RMSE <= [0.0605, 0.0862, 0.3299, 0.2131]
 - Dataset 2 : RMSE <= [0.0633, 0.0591, 0.3393, 0.2992]
+
+## Follows the Correct Algorithm
+
+### Your Sensor Fusion algorithm follows the general processing flow as taught in the preceding lessons
+
+The Sensor Fusion algorithm is implemented in the [`ProcessMeasurement` (src/ukf.cpp)](./src/ukf.cpp#L105) method and follows the general processing flow in lines [161](./src/ukf.cpp#L161) through [171](./src/ukf.cpp#L171).
+
+### Your Kalman Filter algorithm handles the first measurements appropriately
+
+The first measurement is handled in the [`ProcessMeasurement` (src/ukf.cpp)](./src/ukf.cpp#L105) method in lines [118](./src/ukf.cpp#L118) through [151](./src/ukf.cpp#L151) and takes into account different sensor types in the incoming measurements as well as usage of a single sensor only.
+
+### Your Kalman Filter algorithm first predicts then updates
+
+Upon receiving a measurement after the first, the algorithm predicts object position to the current timestep at [src/ukf.cpp](./src/ukf.cpp#L161) line [161](./src/ukf.cpp#L161) and then updates the prediction using the new measurement at lines [168](./src/ukf.cpp#L168) and [170](./src/ukf.cpp#L170).
+
+### Your Kalman Filter can handle radar and lidar measurements
+
+Different types of measurements are handled in two places in [src/ukf.cpp](./src/ukf.cpp):
+
+- For the first measurement in lines [119](./src/ukf.cpp#L119) through 149.
+- For the update part in lines [167](./src/ukf.cpp#L167) through 171.
+
+## Code Efficiency
+
+### Your algorithm should avoid unnecessary calculations
+
+My intention was to write the code as close as possible to how it was taught in the lectures. I did sacrifice the efficiency a bit over the general flow understanding and do have a bit of redundant calculations in a few places. For example three for loops in lines [346](./src/ukf.cpp#L346) through 372 in [src/ukf.cpp](./src/ukf.cpp) can be combined into one but the Kalman filter steps woudn't be that distinguishable.
+
+## Comparison between EKF and UKF and a single data source for UKF
+
+### Dataset 1
+| RMSE |  EKF   |   UKF   | UKF LIDAR only | UKF RADAR only |
+|:-------:|:-------:|:--------:|:-------------------:|:--------------------:|
+|     X    | 0.0973 | 0.0605 |          0.1003       |          0.1601         |
+|     Y    | 0.0855 | 0.0862 |          0.0981       |          0.2011         |
+|    VX   | 0.4513 | 0.3299 |          0.6058       |          0.3325         |
+|    VY   | 0.4399 | 0.2131 |          0.2391       |          0.4712         |
+
+### Dataset 2
+| RMSE |  EKF   |   UKF   | UKF LIDAR only | UKF RADAR only |
+|:-------:|:-------:|:--------:|:-------------------:|:--------------------:|
+|     X    | 0.0726 | 0.0633 |          0.0998       |        0.1861           |
+|     Y    | 0.0965 | 0.0591 |          0.0813       |        0.2121           |
+|    VX   | 0.4216 | 0.3393 |          0.5969       |        0.3903           |
+|    VY   | 0.4932 | 0.2992 |          0.2786       |        0.5127           |
+
+As it can be clearly seen UKF outperforms EKF. Even using a single data source the UKF performs relatively good and very close to the EKF performance, especially with the LIDAR sensor.
+

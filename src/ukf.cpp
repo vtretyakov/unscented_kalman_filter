@@ -452,7 +452,7 @@ void UKF::UpdateRadar(MeasurementPackage meas_package) {
     // measurement model
     Zsig(0,i) = sqrt(p_x*p_x + p_y*p_y);                        //r
     Zsig(1,i) = atan2(p_y,p_x);                                 //phi
-    if (sqrt(p_x*p_x + p_y*p_y) < 0.0001){
+    if (sqrt(p_x*p_x + p_y*p_y) < 0.0001){ //avoid devision by zero
       Zsig(2,i) = (p_x*v1 + p_y*v2 ) / 0.0001;   //r_dot
     } else {
       Zsig(2,i) = (p_x*v1 + p_y*v2 ) / sqrt(p_x*p_x + p_y*p_y);   //r_dot
