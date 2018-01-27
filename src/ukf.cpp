@@ -275,10 +275,10 @@ void UKF::Prediction(double delta_t) {
     //add noise
     px_p = px_p + 0.5 * nu_a * delta_t * delta_t * cos(yaw);
     py_p = py_p + 0.5 * nu_a * delta_t * delta_t * sin(yaw);
-    v_p = v_p + nu_a*delta_t;
+    v_p = v_p + nu_a * delta_t;
     
-    yaw_p = yaw_p + 0.5*nu_yawdd*delta_t*delta_t;
-    yawd_p = yawd_p + nu_yawdd*delta_t;
+    yaw_p = yaw_p + 0.5 * nu_yawdd * delta_t * delta_t;
+    yawd_p = yawd_p + nu_yawdd * delta_t;
     
     //write predicted sigma point into right column
     Xsig_pred_(0, i) = px_p;
@@ -312,8 +312,8 @@ void UKF::Prediction(double delta_t) {
     // state difference
     VectorXd x_diff = Xsig_pred_.col(i) - x_;
     //angle normalization
-    while (x_diff(3)> M_PI) x_diff(3) -= 2.*M_PI;
-    while (x_diff(3)<-M_PI) x_diff(3) += 2.*M_PI;
+    while (x_diff(3)> M_PI) x_diff(3) -= 2. * M_PI;
+    while (x_diff(3)<-M_PI) x_diff(3) += 2. * M_PI;
     
     P_ = P_ + weights_(i) * x_diff * x_diff.transpose();
   }
@@ -407,7 +407,7 @@ void UKF::UpdateLidar(MeasurementPackage meas_package) {
   
   //update state mean and covariance matrix
   x_ = x_ + K * z_diff;
-  P_ = P_ - K*S*K.transpose();
+  P_ = P_ - K * S * K.transpose();
   
   //NIS Update
   NIS_laser_ = z_diff.transpose() * S.inverse() * z_diff;
