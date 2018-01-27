@@ -151,3 +151,15 @@ My intention was to write the code as close as possible to how it was taught in 
 
 As it can be clearly seen UKF outperforms EKF. Even using a single data source the UKF performs relatively good and very close to the EKF performance, especially with the LIDAR sensor.
 
+## Normalized Innovation Squared (NIS)
+Measurement noise parameters were not changed from the originally provided but the consistency check with the help of NIS values shows that we estimate the uncertainty of our system correctly. The green line in the images is 95% of our NIS distribution which is called Chi-squared distribution. For the Lidar we have 2 DOF and in this case our NIS values in 95% cases will be between 0 and 5.991. Radar has 3 DOF, so in 95% of the cases our NIS will be between 0 and 7.815.
+
+Expected NIS values:
+![Chi-squared](imgs/Chi-squared.png)
+
+Our computed NIS for Lidar:
+![NIS Lidar](imgs/NIS_laser.png)
+
+Our computed NIS for Radar:
+![NIS Radar](imgs/NIS_radar.png)
+
