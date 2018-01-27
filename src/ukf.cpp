@@ -116,7 +116,7 @@ void UKF::ProcessMeasurement(MeasurementPackage meas_package) {
 
   
   if (!is_initialized_) {//first measurement
-    if (meas_package.sensor_type_ == MeasurementPackage::RADAR) {
+    if (meas_package.sensor_type_ == MeasurementPackage::RADAR && use_radar_) {
       /**
        Convert radar from polar to cartesian coordinates and initialize state.
        */
@@ -139,13 +139,14 @@ void UKF::ProcessMeasurement(MeasurementPackage meas_package) {
       
       x_ << px, py, rho_dot, phi, 0;
       time_us_ = meas_package.timestamp_;
-    } else if (meas_package.sensor_type_ == MeasurementPackage::LASER){
+      is_initialized_ = true;
+    } else if (meas_package.sensor_type_ == MeasurementPackage::LASER && use_laser_){
       double px = meas_package.raw_measurements_[0];
       double py = meas_package.raw_measurements_[1];
       x_ << px, py, 0, 0, 0;
       time_us_ = meas_package.timestamp_;
+      is_initialized_ = true;
     }
-    is_initialized_ = true;
     return;
   }
   
@@ -163,9 +164,9 @@ void UKF::ProcessMeasurement(MeasurementPackage meas_package) {
    *  Update
    ****************************************************************************/
 
-  if (meas_package.sensor_type_ == MeasurementPackage::RADAR) {
+  if (meas_package.sensor_type_ == MeasurementPackage::RADAR && use_radar_) {
     UpdateRadar(meas_package);
-  } else if (meas_package.sensor_type_ == MeasurementPackage::LASER) {
+  } else if (meas_package.sensor_type_ == MeasurementPackage::LASER && use_laser_) {
     UpdateLidar(meas_package);
   }
   
