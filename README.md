@@ -88,3 +88,18 @@ And here is the result after running the UKF with the Dataset 2:
 ![Simulator with Dataset 2](imgs/dataset_2.png)
 
 # [Rubric](https://review.udacity.com/#!/rubrics/783/view) points
+
+## Compiling
+
+### Your code should compile
+
+The code compiles without errors with `cmake` and `make` but only has been tested on Mac OS.
+
+## Accuracy
+
+### px, py, vx, vy output coordinates must have an RMSE <= [.09, .10, .40, .30] when using the file: "obj_pose-laser-radar-synthetic-input.txt", which is the same data file the simulator uses for Dataset 1."
+
+The EKF accuracy was:
+
+- Dataset 1 : RMSE <= [0.0605, 0.0862, 0.3299, 0.2131]
+- Dataset 2 : RMSE <= [0.0633, 0.0591, 0.3393, 0.2992]
