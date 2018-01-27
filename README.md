@@ -70,3 +70,21 @@ You need to start the Term 2 simulator. If the simulator is running, the filter 
 Listening to port 4567
 Connected!!!
 ```
+Here is the simulator window when just started:
+
+![Simulator window just started](imgs/sim_window.png)
+
+The simulator provides two datasets. The difference between them are:
+
+- The direction the car is moving.
+- The order the first measurement is sent to the UKF. On dataset 1, the LIDAR measurement is sent first. On the dataset 2, the RADAR measurement is sent first.
+
+Here is the result after running the UKF with the Dataset 1:
+
+![Simulator with Dataset 1](imgs/dataset_1.png)
+
+And here is the result after running the UKF with the Dataset 2:
+
+![Simulator with Dataset 2](imgs/dataset_2.png)
+
+# [Rubric](https://review.udacity.com/#!/rubrics/783/view) points
